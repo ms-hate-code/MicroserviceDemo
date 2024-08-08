@@ -10,10 +10,18 @@ pipeline {
       }
     }
 
+    stage('Install Docker Compose') {
+      steps {
+          sh '''
+          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          '''
+      }
+    }
     stage('Build image') {
       steps{
-        sh 'docker-compose -f docker-compose.infrastructure.yml build'
-        sh 'docker-compose -f docker-compose.service.yml build'
+        sh '/usr/local/bin/docker-compose -f docker-compose.infrastructure.yml build'
+        sh '/usr/local/bin/docker-compose -f docker-compose.service.yml build'
       }
     }
 
