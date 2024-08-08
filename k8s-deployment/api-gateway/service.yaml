@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: microservice-demo-api-gateway-service #The name of the Kubernetes Service to be created in the Kubernetes cluster
+spec:
+  selector:
+    app: microservice-demo-api-gateway
+  type: LoadBalancer #Type of the Kubernetes Service
+  ports:
+  - protocol: TCP
+    port: 5678 #Service port
+    targetPort: 5678 #The port for the application container

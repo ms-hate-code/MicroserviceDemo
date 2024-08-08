@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservice-demo-identity-service-deployment #The name of the Kubernetes Deployment to be created in the Kubernetes cluster
+  labels:
+    app: microservice-demo-identity-service
+spec:
+  selector:
+    matchLabels:
+      app: microservice-demo-identity-service
+  template:
+    metadata:
+      labels:
+        app: microservice-demo-identity-service 
+    spec:
+      containers:
+      - name: microservice-demo-identity-service #The name of the application container
+        image: microservice-demo-identity-service:latest #The Docker image for building the application container
+        ports:
+        - containerPort: 5556 #The port for the application container

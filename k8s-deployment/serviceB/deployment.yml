@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservice-demo-serviceb-deployment #The name of the Kubernetes Deployment to be created in the Kubernetes cluster
+  labels:
+    app: microservice-demo-serviceb
+spec:
+  selector:
+    matchLabels:
+      app: microservice-demo-serviceb
+  template:
+    metadata:
+      labels:
+        app: microservice-demo-serviceb 
+    spec:
+      containers:
+      - name: microservice-demo-serviceb #The name of the application container
+        image: microservice-demo-serviceb:latest #The Docker image for building the application container
+        ports:
+        - containerPort: 5267 #The port for the application container

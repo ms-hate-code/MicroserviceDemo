@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservice-demo-api-gateway-deployment #The name of the Kubernetes Deployment to be created in the Kubernetes cluster
+  labels:
+    app: microservice-demo-api-gateway
+spec:
+  selector:
+    matchLabels:
+      app: microservice-demo-api-gateway
+  template:
+    metadata:
+      labels:
+        app: microservice-demo-api-gateway 
+    spec:
+      containers:
+      - name: microservice-demo-api-gateway #The name of the application container
+        image: microservice-demo-api-gateway:latest #The Docker image for building the application container
+        ports:
+        - containerPort: 5678 #The port for the application container

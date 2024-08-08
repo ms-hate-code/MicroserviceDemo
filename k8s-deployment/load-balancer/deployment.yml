@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservice-demo-load-balancer-deployment #The name of the Kubernetes Deployment to be created in the Kubernetes cluster
+  labels:
+    app: microservice-demo-load-balancer
+spec:
+  selector:
+    matchLabels:
+      app: microservice-demo-load-balancer
+  template:
+    metadata:
+      labels:
+        app: microservice-demo-load-balancer 
+    spec:
+      containers:
+      - name: microservice-demo-load-balancer #The name of the application container
+        image: microservice-demo-load-balancer:latest #The Docker image for building the application container
+        ports:
+        - containerPort: 5256 #The port for the application container

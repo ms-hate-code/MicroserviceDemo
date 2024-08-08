@@ -1,0 +1,55 @@
+pipeline {
+
+  environment {
+  }
+
+  agent any
+
+  stages {
+
+    stage('Checkout Source') {
+      steps {
+        git 'https://github.com/ms-hate-code/MicroserviceDemo.git'
+      }
+    }
+
+    stage('Build image') {
+      steps{
+        sh 'docker-compose -f docker-compose.infrastructure.yml build'
+        sh 'docker-compose -f docker-compose.service.yml build'
+      }
+    }
+
+    stage('Pushing images to Dockerhub') {
+      environment {
+        registryCredential = 'dockerhub-credentials'
+      }
+      steps{
+        script {
+          def dockerImages = sh(script: 'docker images --format "{{.Repository}}:{{.Tag}}"', returnStdout: true).trim().split("\n")
+          dockerImages.each { image ->
+            docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
+                sh "docker push ${image}"
+            }
+          }
+        }
+      }
+    }
+
+    stage('Deploying Microservice container to K8S') {
+      steps {
+        script {
+          def deploymentFile = 'deployment.yml'
+          def serviceFile = 'service.yml'
+          def deploymentServices = ['api-gateway', 'identity-service', 'load-balancer', 'serviceA', 'serviceB']
+          // Loop through the list and deploy each file
+          for (service in deploymentServices) {
+            kubernetesDeploy(configs: service + "/deployment.yaml", service + "/service.yaml")
+          }
+        }
+      }
+    }
+
+  }
+
+}
