@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option csharp_namespace = "TestBProtoService.Generated";
+
+package testB;
+
+// Service definition.
+service TestBProtoService {
+  rpc GetTestB(GetTestBRequest) returns (GetTestBResponse);
+}
+
+message GetTestBRequest {
+  
+}
+
+message GetTestBResponse {
+  string message = 1;
+}

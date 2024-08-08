@@ -1,0 +1,28 @@
+{
+  "Routes": [
+    {
+      "UseServiceDiscovery": true,
+      "ServiceName": "serviceB",
+      "DownstreamPathTemplate": "/api/testB/{everything}",
+      "DownstreamScheme": "https",
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      },
+//      "DownstreamHostAndPorts": [
+//        {
+//          "Host": "localhost",
+//          "Port": 5267
+//        }
+//      ],
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 2,
+        "DurationOfBreak": 5000, // circuit breaker will stay open for 1 second after it is tripped
+        "TimeoutValue": 10000 // if a request takes more than 5 seconds, it will automatically be timed out
+      },
+      "SwaggerKey": "serviceB",
+      "UpstreamPathTemplate": "/api/testB/{everything}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "Routes": [
+    {
+      "UseServiceDiscovery": true,
+      "ServiceName": "identity-service",
+      "DownstreamPathTemplate": "/api/identity/auth/{everything}",
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
+//      "DownstreamHostAndPorts": [
+//        { 
+//          "Host": "localhost", 
+//          "Port": 5556
+//        }
+//      ],
+      "DownstreamScheme": "http",
+      "SwaggerKey": "identity-service",
+      "UpstreamPathTemplate": "/api/identity/auth/{everything}",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "UseServiceDiscovery": true,
+      "ServiceName": "identity-service",
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
+      "DownstreamPathTemplate": "/api/identity/{everything}",
+      "DownstreamScheme": "http",
+//      "DownstreamHostAndPorts": [
+//        {
+//          "Host": "localhost",
+//          "Port": 5556
+//        }
+//      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowScopes": []
+      },
+      //"RateLimitOptions": {
+      //  "ClientWhitelist": [],
+      //  "EnableRateLimiting": true,
+      //  "Period": "1s",
+      //  "PeriodTimespan": 1,
+      //  "Limit": 1
+      //},
+      "SwaggerKey": "identity-service",
+      "UpstreamPathTemplate": "/api/identity/{everything}",
+      "UpstreamHttpMethod": [ "GET" ]
+    }
+  ]
+}

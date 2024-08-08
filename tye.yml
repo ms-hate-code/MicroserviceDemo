@@ -1,0 +1,36 @@
+name: microservice-demo
+
+services:
+
+  - name: APIGateway
+    project: MicroserviceDemo.APIGateway/MicroserviceDemo.APIGateway.csproj
+    env_file:
+      - ./tye-env
+    bindings:
+      - port: 5176
+        protocol: http
+
+  - name: LoadBalancer
+    project: MicroserviceDemo.LoadBalancer/MicroserviceDemo.LoadBalancer.csproj
+    env_file:
+      - ./tye-env
+    bindings:
+      - port: 5256
+        protocol: http
+
+  # - name: serviceA
+  #   project: MicroserviceDemo.ServiceA/MicroserviceDemo.ServiceA.csproj
+  #   env_file:
+  #     - ./tye-env
+  #   replicas: 3
+  #   bindings:
+  #     - port: 5029
+  #       protocol: http
+
+  - name: serviceB
+    project: MicroserviceDemo.ServiceB/MicroserviceDemo.ServiceB.csproj
+    env_file:
+      - ./tye-env
+    bindings:
+      - port: 5267
+        protocol: http

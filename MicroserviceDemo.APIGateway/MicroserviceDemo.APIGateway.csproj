@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MMLib.SwaggerForOcelot" Version="6.3.2" />
+    <PackageReference Include="Ocelot" Version="23.0.0" />
+    <PackageReference Include="Ocelot.Cache.CacheManager" Version="23.0.0" />
+    <PackageReference Include="Ocelot.Provider.Consul" Version="23.0.0" />
+	  <PackageReference Include="Ocelot.Provider.Polly" Version="23.0.0" />
+	  <PackageReference Include="Polly" Version="8.4.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MicroserviceDemo.BuildingBlock\MicroserviceDemo.BuildingBlock.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\.dockerignore">
+      <Link>.dockerignore</Link>
+    </Content>
+  </ItemGroup>
+
+</Project>

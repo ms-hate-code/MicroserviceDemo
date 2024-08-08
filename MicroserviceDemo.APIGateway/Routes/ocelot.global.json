@@ -1,0 +1,22 @@
+{
+  "GlobalConfiguration": {
+    "ServiceDiscoveryProvider": {
+      "Scheme": "http",
+      "Host": "localhost",
+      "Port": 8500,
+      "Type": "Consul"
+    },
+    "QoSOptions": {
+      "ExceptionsAllowedBeforeBreaking": 99999,
+      "DurationOfBreak": 0, // circuit breaker will stay open for 1 second after it is tripped
+      "TimeoutValue": 10000 // if a request takes more than 5 seconds, it will automatically be timed out
+    },
+    "RateLimitOptions": {
+      "ClientIdHeader": "ClientId",
+      "QuotaExceededMessage": null,
+      "RateLimitCounterPrefix": "ocelot",
+      "DisableRateLimitHeaders": true,
+      "HttpStatusCode": 429
+    }
+  }
+}

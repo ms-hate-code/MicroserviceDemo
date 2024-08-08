@@ -1,0 +1,224 @@
+version: '3.8'
+
+name: microservice-demo-service
+
+services:
+  api-gateway:
+    container_name: microservice-demo-api-gateway
+    image: microservice-demo-api-gateway
+    environment:
+      - HOST_PORT_INSTANCE=http://microservice-demo-api-gateway:5678
+      - OCELOT_SERVICE_DISCOVERY_HOST=microservice-demo-consul
+      - ASPNETCORE_HTTP_PORTS=5678
+      - OTEL_EXPORTER_JAEGER_AGENT_HOST=jaeger
+      - OTEL_EXPORTER_JAEGER_AGENT_PORT=6831
+      - OTEL_EXPORTER_JAEGER_ENDPOINT=http://jaeger:14268/api/traces
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
+    ports:
+      - "5678:5678"
+    build:
+      context: .
+      dockerfile: ./MicroserviceDemo.APIGateway/Dockerfile
+    networks:
+      - microservice-demo-network
+      
+  load-balancer:
+    container_name: microservice-demo-load-balancer
+    image: microservice-demo-load-balancer
+    environment:
+      - HOST_PORT_INSTANCE=http://microservice-demo-load-balancer:5256
+      - ASPNETCORE_HTTP_PORTS=5256
+      - OTEL_EXPORTER_JAEGER_AGENT_HOST=jaeger
+      - OTEL_EXPORTER_JAEGER_AGENT_PORT=6831
+      - OTEL_EXPORTER_JAEGER_ENDPOINT=http://jaeger:14268/api/traces
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
+    expose:
+      - "5256"
+    ports:
+      - "5256:5256"
+    build:
+      context: .
+      dockerfile: ./MicroserviceDemo.LoadBalancer/Dockerfile
+    networks:
+      - microservice-demo-network
+      
+  identity-service:
+    container_name: microservice-demo-identity-service
+    image: microservice-demo-identity-service
+    environment:
+      - HOST_PORT_INSTANCE=http://microservice-demo-identity-service:5556
+      - ASPNETCORE_HTTP_PORTS=5556
+      - OTEL_EXPORTER_JAEGER_AGENT_HOST=jaeger
+      - OTEL_EXPORTER_JAEGER_AGENT_PORT=6831
+      - OTEL_EXPORTER_JAEGER_ENDPOINT=http://jaeger:14268/api/traces
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
+    expose:
+      - "5556"
+    ports:
+      - "5556:5556"
+    build:
+      context: .
+      dockerfile: ./MicroserviceDemo.IdentityService/Dockerfile
+    networks:
+      - microservice-demo-network
+      
+  servicea1:
+    container_name: microservice-demo-servicea1
+    image: microservice-demo-servicea
+    environment:
+      - HOST_PORT_INSTANCE=http://microservice-demo-servicea1:5029
+      - ASPNETCORE_HTTP_PORTS=5029
+      - OTEL_EXPORTER_JAEGER_AGENT_HOST=jaeger
+      - OTEL_EXPORTER_JAEGER_AGENT_PORT=6831
+      - OTEL_EXPORTER_JAEGER_ENDPOINT=http://jaeger:14268/api/traces
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
+    expose:
+      - "5029"
+    ports:
+      - "5029:5029"
+    build:
+      context: .
+      dockerfile: ./MicroserviceDemo.ServiceA/Dockerfile
+    networks:
+      - microservice-demo-network
+      
+  servicea2:
+    container_name: microservice-demo-servicea2
+    image: microservice-demo-servicea
+    environment:
+      - HOST_PORT_INSTANCE=http://microservice-demo-servicea2:5030
+      - ASPNETCORE_HTTP_PORTS=5030
+      - OTEL_EXPORTER_JAEGER_AGENT_HOST=jaeger
+      - OTEL_EXPORTER_JAEGER_AGENT_PORT=6831
+      - OTEL_EXPORTER_JAEGER_ENDPOINT=http://jaeger:14268/api/traces
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
+    expose:
+      - "5030"
+    ports:
+      - "5030:5030"
+    build:
+      context: .
+      dockerfile: ./MicroserviceDemo.ServiceA/Dockerfile
+    networks:
+      - microservice-demo-network
+      
+  servicea3:
+    container_name: microservice-demo-servicea3
+    image: microservice-demo-servicea
+    environment:
+      - HOST_PORT_INSTANCE=http://microservice-demo-servicea3:5031
+      - ASPNETCORE_HTTP_PORTS=5031
+      - OTEL_EXPORTER_JAEGER_AGENT_HOST=jaeger
+      - OTEL_EXPORTER_JAEGER_AGENT_PORT=6831
+      - OTEL_EXPORTER_JAEGER_ENDPOINT=http://jaeger:14268/api/traces
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
+    expose:
+      - "5031"
+    ports:
+      - "5031:5031"
+    build:
+      context: .
+      dockerfile: ./MicroserviceDemo.ServiceA/Dockerfile
+    networks:
+      - microservice-demo-network
+      
+  serviceb1:
+    container_name: microservice-demo-serviceb1
+    image: microservice-demo-serviceb
+    environment:
+      - HOST_PORT_INSTANCE=https://microservice-demo-serviceb1:5267
+      - ASPNETCORE_HTTP_PORTS=5267
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=Admin1234
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - OTEL_EXPORTER_JAEGER_AGENT_HOST=jaeger
+      - OTEL_EXPORTER_JAEGER_AGENT_PORT=6831
+      - OTEL_EXPORTER_JAEGER_ENDPOINT=http://jaeger:14268/api/traces
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
+    expose:
+      - "5267"
+    ports:
+      - "5267:5267"
+    build:
+      context: .
+      dockerfile: ./MicroserviceDemo.ServiceB/Dockerfile
+    networks:
+      - microservice-demo-network
+    volumes:
+      - ~/.aspnet/https:/https:ro
+      
+  serviceb2:
+    container_name: microservice-demo-serviceb2
+    image: microservice-demo-serviceb
+    environment:
+      - HOST_PORT_INSTANCE=https://microservice-demo-serviceb2:5268
+      - ASPNETCORE_HTTP_PORTS=5268
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=Admin1234
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - OTEL_EXPORTER_JAEGER_AGENT_HOST=jaeger
+      - OTEL_EXPORTER_JAEGER_AGENT_PORT=6831
+      - OTEL_EXPORTER_JAEGER_ENDPOINT=http://jaeger:14268/api/traces
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
+    expose:
+      - "5268"
+    ports:
+      - "5268:5268"
+    build:
+      context: .
+      dockerfile: ./MicroserviceDemo.ServiceB/Dockerfile
+    networks:
+      - microservice-demo-network
+    volumes:
+      - ~/.aspnet/https:/https:ro
+      
+  serviceb3:
+    container_name: microservice-demo-serviceb3
+    image: microservice-demo-serviceb
+    environment:
+      - HOST_PORT_INSTANCE=https://microservice-demo-serviceb3:5269
+      - ASPNETCORE_HTTP_PORTS=5269
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=Admin1234
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - OTEL_EXPORTER_JAEGER_AGENT_HOST=jaeger
+      - OTEL_EXPORTER_JAEGER_AGENT_PORT=6831
+      - OTEL_EXPORTER_JAEGER_ENDPOINT=http://jaeger:14268/api/traces
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
+    expose:
+      - "5269"
+    ports:
+      - "5269:5269"
+    build:
+      context: .
+      dockerfile: ./MicroserviceDemo.ServiceB/Dockerfile
+    networks:
+      - microservice-demo-network
+    volumes:
+      - ~/.aspnet/https:/https:ro
+      
+  serviceb4:
+    container_name: microservice-demo-serviceb4
+    image: microservice-demo-serviceb
+    environment:
+      - HOST_PORT_INSTANCE=https://microservice-demo-serviceb4:5270
+      - ASPNETCORE_HTTP_PORTS=5270
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=Admin1234
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - OTEL_EXPORTER_JAEGER_AGENT_HOST=jaeger
+      - OTEL_EXPORTER_JAEGER_AGENT_PORT=6831
+      - OTEL_EXPORTER_JAEGER_ENDPOINT=http://jaeger:14268/api/traces
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
+    expose:
+      - "5270"
+    ports:
+      - "5270:5270"
+    build:
+      context: .
+      dockerfile: ./MicroserviceDemo.ServiceB/Dockerfile
+    networks:
+      - microservice-demo-network
+    volumes:
+      - ~/.aspnet/https:/https:ro
+
+networks:
+  microservice-demo-network:
+    external:
+      name: microservice-demo-network
