@@ -32,6 +32,11 @@ pipeline {
     }
     stage('Build image') {
       steps{
+        sh '''
+          usermod -a -G docker $USER
+          chgrp docker /usr/bin/docker-compose
+          chmod 750 /usr/bin/docker-compose
+        '''
         sh 'docker-compose -f docker-compose.infrastructure.yml build'
         sh 'docker-compose -f docker-compose.service.yml build'
       }
