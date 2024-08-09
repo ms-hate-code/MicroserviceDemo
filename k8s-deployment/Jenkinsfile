@@ -32,8 +32,8 @@ pipeline {
     }
     stage('Build image') {
       steps{
-        sh '/usr/bin/docker-compose -f docker-compose.infrastructure.yml build'
-        sh '/usr/bin/docker-compose -f docker-compose.service.yml build'
+        sh 'docker-compose -f docker-compose.infrastructure.yml build'
+        sh 'docker-compose -f docker-compose.service.yml build'
       }
     }
 
