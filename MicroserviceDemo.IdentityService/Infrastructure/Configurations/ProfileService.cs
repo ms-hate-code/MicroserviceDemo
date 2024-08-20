@@ -3,6 +3,7 @@ using IdentityModel;
 using IdentityServer4.Extensions;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
+using MicroserviceDemo.BuildingBlock.Constants;
 using MicroserviceDemo.IdentityService.Domain.Entity;
 using Microsoft.AspNetCore.Identity;
 
@@ -37,7 +38,8 @@ public class ProfileService(
                 var roles = await _userManager.GetRolesAsync(user);
                 foreach (var roleName in roles)
                 {
-                    claims.Add(new Claim(JwtClaimTypes.Role, roleName));
+                    claims.Add(new Claim(ClaimTypes.Role, roleName));
+                    claims.Add(new Claim(CustomIdentityConstants.CustomClaim.ROLE, roleName));
                     if (!_roleManager.SupportsRoleClaims) continue;
                     
                     var role = await _roleManager.FindByNameAsync(roleName);

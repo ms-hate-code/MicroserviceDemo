@@ -17,7 +17,7 @@ namespace MicroserviceDemo.ServiceB.Controllers
         }
         
         [HttpGet("forward/load-balancer")]
-        public async Task<IActionResult> GetData()
+        public async Task<IActionResult> GetForwardData()
         {
             var request = HttpContext.Request;
             var data = $"{request.Host} => Response from Service B";
@@ -26,9 +26,24 @@ namespace MicroserviceDemo.ServiceB.Controllers
         }
         
         [HttpGet("forward/rate-limit")]
-        public async Task<IActionResult> GetRateLimitData()
+        public async Task<IActionResult> GetForwardRateLimitData()
         {
             var data = $"Response from Service B";
+            return Ok(new APIResponse<string>(StatusCodes.Status200OK, data));
+        }
+        
+        [HttpGet("rate-limit")]
+        public async Task<IActionResult> GetRateLimitData()
+        {
+            var data = $"Rate limit response from Service B";
+            return Ok(new APIResponse<string>(StatusCodes.Status200OK, data));
+        }
+        
+        [HttpGet("gw-caching")]
+        public async Task<IActionResult> GetGWCachingData()
+        {
+            var data = $"GW Caching response from Service B";
+            await Task.Delay(3000);
             return Ok(new APIResponse<string>(StatusCodes.Status200OK, data));
         }
         

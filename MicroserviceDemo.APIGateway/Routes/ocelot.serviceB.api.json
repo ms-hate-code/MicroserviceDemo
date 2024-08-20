@@ -1,6 +1,45 @@
 {
   "Routes": [
     {
+      "UseServiceDiscovery": false,
+      "ServiceName": "serviceB",
+      "DownstreamPathTemplate": "/api/testB/gw-caching",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5267
+        }
+      ],
+      "FileCacheOptions": {
+        "TtlSeconds": 5
+      },
+      "SwaggerKey": "serviceB",
+      "UpstreamPathTemplate": "/api/testB/gw-caching",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    {
+      "UseServiceDiscovery": true,
+      "ServiceName": "serviceB",
+      "DownstreamPathTemplate": "/api/testB/rate-limit",
+      "DownstreamScheme": "https",
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s", // the duration for which the limit is applicable
+        "PeriodTimespan": 2, // the time in seconds after which a retry is permissible
+        "Limit": 1 // limit of requests a client is allowed to make in Period time
+      },
+      "SwaggerKey": "serviceB",
+      "UpstreamPathTemplate": "/api/testB/rate-limit",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DangerousAcceptAnyServerCertificateValidator": true
+    },
+    {
       "UseServiceDiscovery": true,
       "ServiceName": "serviceB",
       "DownstreamPathTemplate": "/api/testB/aggregation/products",

@@ -71,21 +71,24 @@ public static class Extension
                     .AddPolicy(CustomIdentityConstants.AuthServer.DEMO_APP, policy =>
                     {
                         policy.RequireAuthenticatedUser();
-                        policy.RequireClaim("scope", CustomIdentityConstants.AuthServer.DEMO_APP_SCOPE);
+                        policy.RequireClaim(CustomIdentityConstants.CustomClaim.SCOPE, CustomIdentityConstants.AuthServer.DEMO_APP_SCOPE);
+                        policy.RequireClaim(CustomIdentityConstants.CustomClaim.ROLE, CustomIdentityConstants.SystemRole.USER);
                         policy.RequireClaim(ClaimTypes.Role, CustomIdentityConstants.SystemRole.USER);
                         policy.AuthenticationSchemes = [JwtBearerDefaults.AuthenticationScheme];
                     })
                     .AddPolicy(CustomIdentityConstants.AuthServer.DEMO_ADMIN_APP, policy =>
                     {
                         policy.RequireAuthenticatedUser();
-                        policy.RequireClaim("scope", CustomIdentityConstants.AuthServer.DEMO_APP_SCOPE);
+                        policy.RequireClaim(CustomIdentityConstants.CustomClaim.SCOPE, CustomIdentityConstants.AuthServer.DEMO_APP_SCOPE);
+                        policy.RequireClaim(CustomIdentityConstants.CustomClaim.ROLE, CustomIdentityConstants.SystemRole.ADMIN);
                         policy.RequireClaim(ClaimTypes.Role, CustomIdentityConstants.SystemRole.ADMIN);
                         policy.AuthenticationSchemes = [JwtBearerDefaults.AuthenticationScheme];
                     })
                     .AddPolicy(CustomIdentityConstants.AuthServer.DEMO_BOTH_APP, policy =>
                     {
                         policy.RequireAuthenticatedUser();
-                        policy.RequireClaim("scope", CustomIdentityConstants.AuthServer.DEMO_APP_SCOPE);
+                        policy.RequireClaim(CustomIdentityConstants.CustomClaim.SCOPE, CustomIdentityConstants.AuthServer.DEMO_APP_SCOPE);
+                        policy.RequireClaim(CustomIdentityConstants.CustomClaim.ROLE, CustomIdentityConstants.SystemRole.USER, CustomIdentityConstants.SystemRole.ADMIN);
                         policy.RequireClaim(ClaimTypes.Role, CustomIdentityConstants.SystemRole.USER, CustomIdentityConstants.SystemRole.ADMIN);
                         policy.AuthenticationSchemes = [JwtBearerDefaults.AuthenticationScheme];
                     });

@@ -65,7 +65,7 @@ namespace MicroserviceDemo.ServiceA.Controllers
 
         [HttpGet("identity")]
         [Authorize(Policy = $"{CustomIdentityConstants.AuthServer.DEMO_APP}")]
-        public async Task<IActionResult> GetGrpcData()
+        public async Task<IActionResult> GetIdentityData()
         {
             var data = "Authorized endpoint";
 
@@ -73,7 +73,7 @@ namespace MicroserviceDemo.ServiceA.Controllers
         }
 
         [HttpGet("grpc")]
-        public async Task<IActionResult> GetIdentityData()
+        public async Task<IActionResult> GetGrpcData()
         {
             var host = await _loadBalancingService.GetBestHost(DistributedCacheKeyConst.ServiceBAddressCacheKey);
             var data = await _loadBalancingService.GetGrpcData(DistributedCacheKeyConst.ServiceBAddressCacheKey, host,

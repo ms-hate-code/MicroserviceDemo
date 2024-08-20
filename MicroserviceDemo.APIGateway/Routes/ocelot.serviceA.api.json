@@ -8,23 +8,12 @@
       "LoadBalancerOptions": {
         "Type": "LeastConnection"
       },
-      //      "DownstreamHostAndPorts": [
-      //        {
-      //          "Host": "localhost",
-      //          "Port": 5256
-      //        }
-      //      ],
-      //      "QoSOptions": {
-      //        "ExceptionsAllowedBeforeBreaking": 2,
-      //        "DurationOfBreak": 5000, // circuit breaker will stay open for 1 second after it is tripped
-      //        "TimeoutValue": 10000 // if a request takes more than 5 seconds, it will automatically be timed out
-      //      },
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowScopes": []
       },
       "RouteClaimsRequirement": {
-        "role": "USER"
+        "user_role": "USER"
       },
       "RateLimitOptions": {
         "ClientWhitelist": ["ClientId"],

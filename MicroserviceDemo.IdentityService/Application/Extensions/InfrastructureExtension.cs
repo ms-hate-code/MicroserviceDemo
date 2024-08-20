@@ -19,7 +19,6 @@ public static class InfrastructureExtension
     public static WebApplicationBuilder AddInfrastructure(this WebApplicationBuilder builder)
     {
         var configuration = builder.Configuration;
-        var environment = builder.Environment;
 
         builder.Services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
         
@@ -57,20 +56,11 @@ public static class InfrastructureExtension
 
     public static WebApplication UseInfrastructure(this WebApplication app)
     {
-        var env = app.Environment;
-        // var appOptions = app.GetOptions<AppOptions>(nameof(AppOptions));
-
         app.UseCustomProblemDetails();
         app.UseForwardedHeaders();
         app.UseCustomSwagger();
-        // app.UseCustomHealthCheck();
 
-        // app.UseSerilogRequestLogging(options =>
-        // {
-        //     options.EnrichDiagnosticContext = LogEnrichHelper.EnrichFromRequest;
-        // });
         app.UseMigration<IdentityContext>();
-        // app.UseCorrelationId();
         app.UseIdentityServer();
         app.MapControllers();
 

@@ -15,4 +15,10 @@ public class CustomIdentityConstants
         public const string ADMIN = "ADMIN";
         public const string USER = "USER";
     }
+
+    public static class CustomClaim
+    {
+        public const string SCOPE = "scope";
+        public const string ROLE = "user_role";
+    }
 }
