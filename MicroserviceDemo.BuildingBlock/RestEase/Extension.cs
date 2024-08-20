@@ -59,7 +59,7 @@ namespace MicroserviceDemo.BuildingBlock.RestEase
                 })
                 .AddPolicyHandler(CustomPollyPolicy.GetRetryPolicy())
                 .AddPolicyHandler(CustomPollyPolicy.GetCircuitBreakerPolicy())
-                .AddPolicyHandler(CustomPollyPolicy.GetRateLimitingPolicy());
+                /*.AddPolicyHandler(CustomPollyPolicy.GetRateLimitingPolicy())*/;
         }
 
         private static void ConfigureForwarder<T>(IServiceCollection services, string clientName) where T : class

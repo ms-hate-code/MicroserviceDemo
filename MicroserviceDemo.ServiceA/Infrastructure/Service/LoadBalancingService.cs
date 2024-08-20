@@ -21,7 +21,7 @@ public class LoadBalancingService
 
         var resp = await httpClient.SendAsync(httpRequestMessage);
         await _cachingHandler.SortedSetDecrementAsync<double>(serviceKey, host);
-        // resp.EnsureSuccessStatusCode();
+        resp.EnsureSuccessStatusCode();
 
         var result = await resp.Content.ReadAsStringAsync();
         return JsonConvert.DeserializeObject<T>(result);

@@ -31,5 +31,19 @@ namespace MicroserviceDemo.ServiceB.Controllers
             var data = $"Response from Service B";
             return Ok(new APIResponse<string>(StatusCodes.Status200OK, data));
         }
+        
+        [HttpGet("aggregation/products")]
+        public async Task<IActionResult> GetAggregationProductsData()
+        {
+            var data = $"Get product list";
+            return Ok(new APIResponse<string>(StatusCodes.Status200OK, data));
+        }
+        
+        [HttpGet("aggregation/categories")]
+        public async Task<IActionResult> GetAggregationCategoriesData()
+        {
+            var data = $"Get category list";
+            return Ok(new APIResponse<string>(StatusCodes.Status200OK, data));
+        }
     }
 }

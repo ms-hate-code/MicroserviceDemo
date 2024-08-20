@@ -1,6 +1,9 @@
 using MicroserviceDemo.BuildingBlock.Consul;
+using MicroserviceDemo.BuildingBlock.MassTransit;
 using MicroserviceDemo.BuildingBlock.OpenTelemetry;
 using MicroserviceDemo.BuildingBlock.ProblemDetails;
+using MicroserviceDemo.LoadBalancer.Application.Services.CustomProxyConfig;
+using Yarp.ReverseProxy.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,11 +16,16 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddReverseProxy()
-    .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
+builder.Services
+    .AddSingleton<IProxyConfigProvider>(x => new CustomProxyConfigProvider(builder.Configuration))
+    .AddReverseProxy();
+
+builder.Services
+    .AddSingleton<ICustomProxyConfigService, CustomProxyConfigService>();
 builder.Services.AddCustomOpenTelemetry(builder.Configuration);
 builder.Services.AddConsul();
 builder.Services.AddProblemDetails();
+builder.Services.AddCustomMassTransit(builder.Configuration);
 
 var app = builder.Build();
 
@@ -29,12 +37,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCustomProblemDetails();
-
-app.MapReverseProxy();
-
+app.UseRouting();
 app.UseAuthorization();
-
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapReverseProxy();
+});
 app.MapGet("/api/healths/status", x => x.Response.WriteAsync("Ok!!!"));
-
 app.Run();

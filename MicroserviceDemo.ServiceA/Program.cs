@@ -36,6 +36,7 @@ builder.Services.AddGrpcClient<TestBProtoService.Generated.TestBProtoService.Tes
 
 builder.Services.AddCustomRedisCaching();
 builder.Services.AddScoped<ILoadBalancingService, LoadBalancingService>();
+builder.Services.AddHostedService<HostRegistrationService>();
 builder.Services.AddCustomOpenTelemetry(builder.Configuration);
 builder.Services.RegisterServiceForwarder<IServiceBClientAPI>("serviceB");
 builder.Services.AddCustomMassTransit(builder.Configuration);

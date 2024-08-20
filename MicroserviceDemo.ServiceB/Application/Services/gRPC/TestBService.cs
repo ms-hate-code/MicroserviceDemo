@@ -7,7 +7,7 @@ public class TestBService : TestBProtoService.Generated.TestBProtoService.TestBP
     public override async Task<GetTestBResponse> GetTestB(GetTestBRequest request, ServerCallContext context)
     {
         var data = $"{context.Host} => gRPC Response from Service B";
-        // await Task.Delay(3000);
+        await Task.Delay(3000);
         return new GetTestBResponse
         {
             Message = data

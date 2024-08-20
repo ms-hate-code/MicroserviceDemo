@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservice-demo-api-gateway
+  labels:
+    app: microservice-demo-api-gateway
+spec:
+  selector:
+    matchLabels:
+      app: microservice-demo-api-gateway
+  template:
+    metadata:
+      labels:
+        app: microservice-demo-api-gateway 
+    spec:
+      containers:
+      - image: microservice-demo-api-gateway:latest #The Docker image for building the application container
+        name: microservice-demo-api-gateway #The name of the application container
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: HOST_PORT_INSTANCE
+            value: "https://microservice-demo-serviceb1:5267"
+          - name: OCELOT_SERVICE_DISCOVERY_HOST
+            value: "microservice-demo-consul"
+          - name: ASPNETCORE_HTTP_PORTS
+            value: "5678"
+          - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
+            value: "jaeger"
+          - name: OTEL_EXPORTER_JAEGER_AGENT_PORT
+            value: "6831"
+          - name: OTEL_EXPORTER_JAEGER_ENDPOINT
+            value: "http://jaeger:14268/api/traces"
+          - name: OTEL_EXPORTER_OTLP_ENDPOINT
+            value: "http://otel-collector:4317"
+        ports:
+        - containerPort: 5678 #The port for the application container

@@ -81,6 +81,8 @@ services:
       dockerfile: ./MicroserviceDemo.ServiceA/Dockerfile
     networks:
       - microservice-demo-network
+    depends_on:
+      - load-balancer
       
   servicea2:
     container_name: microservice-demo-servicea2
@@ -101,6 +103,8 @@ services:
       dockerfile: ./MicroserviceDemo.ServiceA/Dockerfile
     networks:
       - microservice-demo-network
+    depends_on:
+      - load-balancer
       
   servicea3:
     container_name: microservice-demo-servicea3
@@ -121,6 +125,8 @@ services:
       dockerfile: ./MicroserviceDemo.ServiceA/Dockerfile
     networks:
       - microservice-demo-network
+    depends_on:
+      - load-balancer
       
   serviceb1:
     container_name: microservice-demo-serviceb1
