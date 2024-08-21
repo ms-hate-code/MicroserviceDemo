@@ -41,7 +41,12 @@ namespace MicroserviceDemo.BuildingBlock.OpenTelemetry
                     .AddOtlpExporter()
                 )
                 .WithMetrics(provider => provider
+                    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(jaegerOptions.ServiceName))
                     .AddMeter(jaegerOptions.ServiceName)
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddRuntimeInstrumentation()
+                    .AddProcessInstrumentation()
                     .AddPrometheusExporter()
                     .ConfigureResource(resource =>
                     {

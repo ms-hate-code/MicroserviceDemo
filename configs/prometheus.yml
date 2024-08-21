@@ -12,3 +12,24 @@ scrape_configs:
     static_configs:
       - targets:
         - jaeger:14269
+
+  - job_name: services
+    static_configs:
+      - targets:
+          - api-gateway:5678
+          - load-balancer:5256
+          - identity-service:5556
+          - servicea1:5029
+          - servicea2:5030
+          - servicea3:5031
+
+  - job_name: tls_services
+    scheme: https
+    tls_config:
+      insecure_skip_verify: true
+    static_configs:
+      - targets:
+          - serviceb1:5267
+          - serviceb2:5268
+          - serviceb3:5269
+          - serviceb4:5270

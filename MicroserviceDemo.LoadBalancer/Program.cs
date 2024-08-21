@@ -39,6 +39,7 @@ if (app.Environment.IsDevelopment())
 app.UseCustomProblemDetails();
 app.UseRouting();
 app.UseAuthorization();
+app.UseOpenTelemetryPrometheusScrapingEndpoint();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();

@@ -75,6 +75,8 @@ app.UseCustomProblemDetails();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseOpenTelemetryPrometheusScrapingEndpoint();
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();

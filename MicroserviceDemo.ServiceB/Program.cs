@@ -44,6 +44,7 @@ app.UseAuthorization();
 app.MapGrpcService<TestBService>();
 
 app.MapControllers();
+app.UseOpenTelemetryPrometheusScrapingEndpoint();
 
 app.MapGet("/api/testB/exception", x => throw new Exception());
 app.MapGet("/api/healths/status", x => x.Response.WriteAsync("Ok!!!"));

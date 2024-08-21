@@ -63,6 +63,7 @@ public static class InfrastructureExtension
         app.UseMigration<IdentityContext>();
         app.UseIdentityServer();
         app.MapControllers();
+        app.UseOpenTelemetryPrometheusScrapingEndpoint();
 
         app.MapGet("/api/healths/status", x => x.Response.WriteAsync("Ok!!!"));
 
