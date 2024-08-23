@@ -1,0 +1,1 @@
+kubectl create secret generic aspnetapp-tls --from-file=./https/aspnetapp.pfx --from-literal=password=Admin1234

@@ -94,7 +94,7 @@
   ],
   "Aggregates": [
     {
-      "UpstreamPathTemplate": "api/testB/aggregation/products-categories",
+      "UpstreamPathTemplate": "/api/aggregation/products-categories",
       "RouteKeys": [ "Products", "Categories" ]
     }
   ]

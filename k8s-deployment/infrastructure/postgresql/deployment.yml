@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservice-demo-postgres
+  labels:
+    app: microservice-demo-postgres
+spec:
+  selector:
+    matchLabels:
+      app: microservice-demo-postgres
+  template:
+    metadata:
+      labels:
+        app: microservice-demo-postgres 
+    spec:
+      containers:
+      - image: postgres #The Docker image for building the application container
+        name: microservice-demo-postgres #The name of the application container
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: POSTGRES_USER
+            value: "postgres"
+          - name: POSTGRES_PASSWORD
+            value: "postgres1234"
+        ports:
+          - containerPort: 5432 #The port for the application container
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: microservice-demo-postgres-service
+spec:
+  selector:
+    app: microservice-demo-postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432

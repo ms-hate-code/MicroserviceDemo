@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: microservice-demo-identity-service-deployment #The name of the Kubernetes Deployment to be created in the Kubernetes cluster
+  name: microservice-demo-identity-service
   labels:
     app: microservice-demo-identity-service
 spec:
@@ -14,7 +14,46 @@ spec:
         app: microservice-demo-identity-service 
     spec:
       containers:
-      - name: microservice-demo-identity-service #The name of the application container
-        image: microservice-demo-identity-service:latest #The Docker image for building the application container
+      - image: microservice-demo-identity-service:latest #The Docker image for building the application container
+        name: microservice-demo-identity-service #The name of the application container
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: "Docker"
+          - name: POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          - name: ASPNETCORE_HTTP_PORTS
+            value: "5556"
+          - name: HOST_PORT_INSTANCE
+            value: "http://$(POD_IP):$(ASPNETCORE_HTTP_PORTS)"
+          - name: OCELOT_SERVICE_DISCOVERY_HOST
+            value: "microservice-demo-consul-service"
+          - name: ConsulOptions__DiscoveryAddress
+            value: "http://microservice-demo-consul-service:8500"
+          - name: AuthOptions__IssuerUri
+            value: "http://microservice-demo-identity-service:5556"
+          - name: PostgresOptions__ConnectionString
+            value: "Server=microservice-demo-postgres-service;Port=5432;Database=microservice_demo;User Id=postgres;Password=postgres1234;Include Error Detail=true"
+          - name: RedisOptions__Host
+            value: "10.244.0.12"
+          - name: JwtOptions__Authority
+            value: "http://microservice-demo-identity-service:5556"
+          - name: JwtOptions__MetadataAddress
+            value: "http://microservice-demo-identity-service:5556/.well-known/openid-configuration"
         ports:
-        - containerPort: 5556 #The port for the application container
+          - containerPort: 5556 #The port for the application container
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: microservice-demo-identity-service
+spec:
+  selector:
+    app: microservice-demo-identity-service
+  ports:
+    - protocol: TCP
+      port: 5556
+      targetPort: 5556

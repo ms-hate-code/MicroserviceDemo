@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservice-demo-redis
+  labels:
+    app: microservice-demo-redis
+spec:
+  selector:
+    matchLabels:
+      app: microservice-demo-redis
+  template:
+    metadata:
+      labels:
+        app: microservice-demo-redis 
+    spec:
+      containers:
+      - image: redis:alpine #The Docker image for building the application container
+        name: microservice-demo-redis #The name of the application container
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 6379 #The port for the application container
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: microservice-demo-redis-service
+spec:
+  selector:
+    app: microservice-demo-redis
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379

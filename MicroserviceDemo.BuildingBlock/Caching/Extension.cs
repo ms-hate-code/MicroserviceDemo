@@ -15,8 +15,8 @@ public static class Extension
         var configuration = new ConfigurationOptions()
         {
             SyncTimeout = 500000,
-            EndPoints = endpoints
-        };
+            EndPoints = endpoints,
+        };  
 
         services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(configuration));
         services.AddScoped<ICachingHandlerService, CachingHandlerService>();

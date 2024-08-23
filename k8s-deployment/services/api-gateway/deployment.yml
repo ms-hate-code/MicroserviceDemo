@@ -18,19 +18,37 @@ spec:
         name: microservice-demo-api-gateway #The name of the application container
         imagePullPolicy: IfNotPresent
         env:
-          - name: HOST_PORT_INSTANCE
-            value: "https://microservice-demo-serviceb1:5267"
-          - name: OCELOT_SERVICE_DISCOVERY_HOST
-            value: "microservice-demo-consul"
+          - name: ASPNETCORE_ENVIRONMENT
+            value: "Docker"
+          - name: POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
           - name: ASPNETCORE_HTTP_PORTS
             value: "5678"
-          - name: OTEL_EXPORTER_JAEGER_AGENT_HOST
-            value: "jaeger"
-          - name: OTEL_EXPORTER_JAEGER_AGENT_PORT
-            value: "6831"
-          - name: OTEL_EXPORTER_JAEGER_ENDPOINT
-            value: "http://jaeger:14268/api/traces"
-          - name: OTEL_EXPORTER_OTLP_ENDPOINT
-            value: "http://otel-collector:4317"
+          - name: HOST_PORT_INSTANCE
+            value: "http://$(POD_IP):$(ASPNETCORE_HTTP_PORTS)"
+          - name: OCELOT_SERVICE_DISCOVERY_HOST
+            value: "microservice-demo-consul-service"
+          - name: ConsulOptions__DiscoveryAddress
+            value: "http://microservice-demo-consul-service:8500"
+          - name: JwtOptions__Authority
+            value: "http://microservice-demo-identity-service:5556"
+          - name: JwtOptions__MetadataAddress
+            value: "http://microservice-demo-identity-service:5556/.well-known/openid-configuration"
         ports:
-        - containerPort: 5678 #The port for the application container
+          - containerPort: 5678 #The port for the application container
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: microservice-demo-api-gateway-service
+spec:
+  selector:
+    app: microservice-demo-api-gateway-service
+  ports:
+    - protocol: TCP
+      port: 5678
+      targetPort: 5678
+  type: LoadBalancer

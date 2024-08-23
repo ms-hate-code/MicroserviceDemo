@@ -2,6 +2,7 @@
 using MicroserviceDemo.BuildingBlock.Web;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Https;
 using Microsoft.Extensions.Hosting;
 
 namespace MicroserviceDemo.BuildingBlock.gRPC;

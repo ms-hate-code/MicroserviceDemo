@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: microservice-demo-serviceb-deployment #The name of the Kubernetes Deployment to be created in the Kubernetes cluster
+  name: microservice-demo-serviceb
   labels:
     app: microservice-demo-serviceb
 spec:
@@ -14,7 +14,66 @@ spec:
         app: microservice-demo-serviceb 
     spec:
       containers:
-      - name: microservice-demo-serviceb #The name of the application container
-        image: microservice-demo-serviceb:latest #The Docker image for building the application container
-        ports:
-        - containerPort: 5267 #The port for the application container
+        - image: microservice-demo-serviceb:latest #The Docker image for building the application container
+          name: microservice-demo-serviceb #The name of the application container
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Docker"
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: ASPNETCORE_HTTP_PORTS
+              value: "5267"
+            - name: HOST_PORT_INSTANCE
+              value: "https://$(POD_IP):$(ASPNETCORE_HTTP_PORTS)"
+            - name: OCELOT_SERVICE_DISCOVERY_HOST
+              value: "microservice-demo-consul-service"
+            - name: ASPNETCORE_Kestrel__Certificates__Default__Password
+              valueFrom:
+                secretKeyRef:
+                  name: aspnetapp-tls
+                  key: password
+            - name: ASPNETCORE_Kestrel__Certificates__Default__Path
+              value: /root/.aspnet/https/aspnetapp.pfx
+            - name: ConsulOptions__DiscoveryAddress
+              value: "http://microservice-demo-consul-service:8500"
+            - name: AuthOptions__IssuerUri
+              value: "http://microservice-demo-identity-service:5556"
+            - name: RedisOptions__Host
+              value: "microservice-demo-redis-service"
+            - name: RabbitMQOptions__Uri
+              value: "microservice-demo-rabbitmq-service"
+            - name: JwtOptions__Authority
+              value: "http://microservice-demo-identity-service:5556"
+            - name: JwtOptions__MetadataAddress
+              value: "http://microservice-demo-identity-service:5556/.well-known/openid-configuration"
+          ports:
+            - containerPort: 5267 #The port for the application container
+          volumeMounts:
+            - name: aspnetapp-tls
+              mountPath: /root/.aspnet/https
+              readOnly: true
+      volumes:
+        - name: aspnetapp-tls
+          secret:
+            secretName: aspnetapp-tls
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: microservice-demo-serviceb-service
+spec:
+  selector:
+    app: microservice-demo-serviceb-service
+  ports:
+    - protocol: TCP
+      name: 'serviceb-non-tls'
+      port: 5267
+      targetPort: 5267
+    - protocol: TCP
+      name: 'serviceb-tls'
+      port: 443
+      targetPort: 443
