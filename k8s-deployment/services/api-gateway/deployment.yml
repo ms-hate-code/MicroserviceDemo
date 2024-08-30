@@ -46,9 +46,9 @@ metadata:
   name: microservice-demo-api-gateway-service
 spec:
   selector:
-    app: microservice-demo-api-gateway-service
+    app: microservice-demo-api-gateway
   ports:
     - protocol: TCP
       port: 5678
       targetPort: 5678
-  type: LoadBalancer
+  type: NodePort

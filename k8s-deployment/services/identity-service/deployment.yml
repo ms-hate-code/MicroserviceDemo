@@ -37,7 +37,7 @@ spec:
           - name: PostgresOptions__ConnectionString
             value: "Server=microservice-demo-postgres-service;Port=5432;Database=microservice_demo;User Id=postgres;Password=postgres1234;Include Error Detail=true"
           - name: RedisOptions__Host
-            value: "10.244.0.12"
+            value: "microservice-demo-redis-service"
           - name: JwtOptions__Authority
             value: "http://microservice-demo-identity-service:5556"
           - name: JwtOptions__MetadataAddress

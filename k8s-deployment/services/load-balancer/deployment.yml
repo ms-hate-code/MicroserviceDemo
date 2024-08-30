@@ -52,7 +52,7 @@ metadata:
   name: microservice-demo-load-balancer-service
 spec:
   selector:
-    app: microservice-demo-load-balancer-service
+    app: microservice-demo-load-balancer
   ports:
     - protocol: TCP
       port: 5256

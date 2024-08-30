@@ -67,7 +67,7 @@ metadata:
   name: microservice-demo-serviceb-service
 spec:
   selector:
-    app: microservice-demo-serviceb-service
+    app: microservice-demo-serviceb
   ports:
     - protocol: TCP
       name: 'serviceb-non-tls'

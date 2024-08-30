@@ -28,6 +28,7 @@ metadata:
 spec:
   selector:
     app: microservice-demo-consul
+  type: NodePort
   ports:
     - protocol: TCP
       port: 8500

@@ -52,7 +52,7 @@ metadata:
   name: microservice-demo-servicea-service
 spec:
   selector:
-    app: microservice-demo-servicea-service
+    app: microservice-demo-servicea
   ports:
     - protocol: TCP
       port: 5029

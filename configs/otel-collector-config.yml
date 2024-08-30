@@ -9,7 +9,7 @@ exporters:
     endpoint: "0.0.0.0:8889"
 
   otlp:
-    endpoint: "jaeger:4317"
+    endpoint: "microservice-demo-jaeger:4317"
     tls:
       insecure: true
 
