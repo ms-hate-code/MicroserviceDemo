@@ -67,7 +67,7 @@ namespace MicroserviceDemo.BuildingBlock.Consul
         private static Uri GetCurrentHost()
         {
             var iPAddress = GlobalExtension.GetCurrentHost();
-        
+            
             return new Uri(iPAddress);
         }
     }

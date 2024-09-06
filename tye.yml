@@ -4,33 +4,45 @@ services:
 
   - name: APIGateway
     project: MicroserviceDemo.APIGateway/MicroserviceDemo.APIGateway.csproj
-    env_file:
-      - ./tye-env
+    env:
+      - name: ASPNETCORE_ENVIRONMENT
+        value: "Development"
+      - name: OCELOT_SERVICE_DISCOVERY_HOST
+        value: localhost
     bindings:
-      - port: 5176
+      - port: 5678
+        protocol: http
+
+  - name: IdentityService
+    project: MicroserviceDemo.IdentityService/MicroserviceDemo.IdentityService.csproj
+    env:
+      - name: ASPNETCORE_ENVIRONMENT
+        value: "Development"
+    bindings:
+      - port: 5556
         protocol: http
 
   - name: LoadBalancer
     project: MicroserviceDemo.LoadBalancer/MicroserviceDemo.LoadBalancer.csproj
-    env_file:
-      - ./tye-env
+    env:
+      - name: ASPNETCORE_ENVIRONMENT
+        value: "Development"
     bindings:
       - port: 5256
         protocol: http
 
-  # - name: serviceA
-  #   project: MicroserviceDemo.ServiceA/MicroserviceDemo.ServiceA.csproj
-  #   env_file:
-  #     - ./tye-env
-  #   replicas: 3
-  #   bindings:
-  #     - port: 5029
-  #       protocol: http
+  - name: serviceA
+    project: MicroserviceDemo.ServiceA/MicroserviceDemo.ServiceA.csproj
+    env:
+      - name: ASPNETCORE_ENVIRONMENT
+        value: "Development"
+    replicas: 3
 
   - name: serviceB
     project: MicroserviceDemo.ServiceB/MicroserviceDemo.ServiceB.csproj
-    env_file:
-      - ./tye-env
-    bindings:
-      - port: 5267
-        protocol: http
+    env:
+      - name: ASPNETCORE_ENVIRONMENT
+        value: "Development"
+      - name: SCHEMA_INSTANCE
+        value: "https"
+    replicas: 4
