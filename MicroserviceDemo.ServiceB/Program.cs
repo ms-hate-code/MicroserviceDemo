@@ -6,6 +6,7 @@ using Grpc.AspNetCore.Server;
 using MicroserviceDemo.BuildingBlock.Caching;
 using MicroserviceDemo.BuildingBlock.gRPC;
 using MicroserviceDemo.BuildingBlock.ProblemDetails;
+using MicroserviceDemo.ServiceB.Application.Middlewares;
 using MicroserviceDemo.ServiceB.Application.Services.gRPC;
 using MicroserviceDemo.ServiceB.Infrastructure.Services.HostedService;
 
@@ -37,6 +38,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<LoadBalancingMiddleware>();
 
 app.UseCustomProblemDetails();
 

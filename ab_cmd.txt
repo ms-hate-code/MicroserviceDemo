@@ -1,2 +1,2 @@
-Client-side Loadbalancer: ab -n 5000 -c 500 http://localhost:5678/api/testA/forward/load-balancer
+Client-side Loadbalancer: ab -n 5000 -c 200 http://localhost:5678/api/testA/forward/load-balancer
 Client-side Loadbalancer - gRPC: ab -n 5000 -c 500 http://localhost:5678/api/testA/grpc

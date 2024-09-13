@@ -53,7 +53,9 @@ metadata:
 spec:
   selector:
     app: microservice-demo-servicea
+  type: NodePort
   ports:
     - protocol: TCP
       port: 5029
       targetPort: 5029
+      nodePort: 30029

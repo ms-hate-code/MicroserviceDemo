@@ -33,3 +33,4 @@ spec:
     - protocol: TCP
       port: 8500
       targetPort: 8500
+      nodePort: 30036

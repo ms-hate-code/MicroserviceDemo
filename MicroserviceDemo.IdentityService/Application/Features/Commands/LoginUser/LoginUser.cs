@@ -3,6 +3,7 @@ using IdentityServer4.Models;
 using Mapster;
 using MassTransit;
 using MediatR;
+using MediatR.Pipeline;
 using MicroserviceDemo.BuildingBlock.Core.CQRS;
 using MicroserviceDemo.BuildingBlock.Core.CustomAPIResponse;
 using MicroserviceDemo.BuildingBlock.Jwt;
@@ -130,6 +131,14 @@ public class LoginUser
                 {
                     throw;
                 }
+            }
+        }
+
+        public class AfterUserLoginPostProcessor : IRequestPostProcessor<LoginUserCommand, LoginUserResult>
+        {
+            public async Task Process(LoginUserCommand request, LoginUserResult response, CancellationToken cancellationToken)
+            {
+                Console.WriteLine("Test post processor");
             }
         }
     }
